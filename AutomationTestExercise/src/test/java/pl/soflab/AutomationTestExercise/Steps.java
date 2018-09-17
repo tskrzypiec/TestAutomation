@@ -177,7 +177,7 @@ public class Steps {
 		
 		String expectedResult ="$56.00";
 		String result = driver.findElement(By.xpath("//span[@class='ajax_block_cart_total']")).getText();
-		//Assert.assertEquals(expectedResult, result);  		
+		assertEquals(expectedResult, result);  		
 	}
 
 }
