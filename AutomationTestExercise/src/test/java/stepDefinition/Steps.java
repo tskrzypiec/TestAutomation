@@ -17,10 +17,12 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import pl.soflab.PageObjects.CategoryPage;
 import pl.soflab.PageObjects.ConfirmAccountPage;
 import pl.soflab.PageObjects.CreateAnAccountPage;
 import pl.soflab.PageObjects.LandingPage;
 import pl.soflab.PageObjects.LogInPage;
+import pl.soflab.PageObjects.ProductPage;
 
 public class Steps {
 
@@ -31,6 +33,8 @@ public class Steps {
 	ConfirmAccountPage confirmAccountPage;
 	CreateAnAccountPage createAnAccountPage;
 	String alias = "alias";
+	CategoryPage categoryPage;
+	ProductPage productPage;
 	
 	@Before
 	public void beforeMethodTestSetUp() {
@@ -86,7 +90,7 @@ public class Steps {
 	public void shouldPressRegisterButton() throws Throwable {
 		confirmAccountPage = createAnAccountPage.submitNewAccount();
 	}
-
+ 
 /*	@Then("^I should be on the \"([^\"]*)\"$")
 	public void shouldBeOnTheSignInPage(String signInPage) throws Throwable {
 
@@ -125,44 +129,75 @@ public class Steps {
 		Assert.assertTrue(confirmAccountPage.getAccountConfirmation().contains("Welcome to your account"));
 	}
 
-	@Given("^I hover on \"([^\"]*)\" and click on \"([^\"]*)\"$")
-	public void shouldClickOnBlouseCategory(String womanCategory, String blouseCategory) throws Throwable {
+	@When("^I pick blouse category and pick the item")
+	//public void shouldClickOnBlouseCategoryAndChooseAnItem(String womanCategory, String blouseCategory,String blouseItem, String clickMoreButton) throws Throwable {
 
-		Actions a = new Actions(driver);
+		public void shouldClickOnBlouseCategoryAndChooseAnItem() throws Throwable {
+
+		/*Actions a = new Actions(driver);
+		a.moveToElement(driver.findElement(By.xpath("//a[@title='Women']"))).build().perform();
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("//a[@title='Blouses']")).click();
+
+		Actions b = new Actions(driver);
+		b.moveToElement(driver.findElement(By.xpath("//img[@title='Blouse']"))).build().perform();
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("//a[@title='View']")).click();
+		Thread.sleep(6000);*/
+		categoryPage = landingPage.pickCategory();
+		
+	}
+		
+	/*	Actions a = new Actions(driver);
 		a.moveToElement(driver.findElement(By.xpath(womanCategory))).build().perform();
 		Thread.sleep(3000);
 		driver.findElement(By.xpath(blouseCategory)).click();
-	}
-
-	@When("^I hover on \"([^\"]*)\" and click \"([^\"]*)\"$")
-	public void shouldHitmoreButtonOnSpecificItem(String blouseItem, String clickMoreButton) throws Throwable {
 
 		Actions b = new Actions(driver);
 		b.moveToElement(driver.findElement(By.xpath(blouseItem))).build().perform();
 		Thread.sleep(3000);
-		driver.findElement(By.xpath(clickMoreButton)).click();
-	}
+		driver.findElement(By.xpath(clickMoreButton)).click();/*
+		
+	//	 When I hover on "//a[@title='Women']" and click on "//a[@title='Blouses']"
+	//	    When I hover on "//img[@title='Blouse']" and click "//a[@title='View']"
+	}  */
 
-	@And("^I pick a \"([^\"]*)\" and put \"([^\"]*)\" and \"([^\"]*)\" a \"([^\"]*)\"$")
-	public void shouldAddQuantityAndPickASize(String quantity, String size, String select, String quantityBox)
+//	@When("^I hover on \"([^\"]*)\" and click \"([^\"]*)\"$")
+//	public void shouldHitmoreButtonOnSpecificItem(String blouseItem, String clickMoreButton) throws Throwable {
+
+//	}
+
+	@And("^I choose quantity and size of the item")
+	//public void shouldAddQuantityAndPickASize(String quantity, String size, String select, String quantityBox)
+	public void shouldAddQuantityAndPickASize()
 			throws Throwable {
-		// Thread.sleep(3000);
-		driver.findElement(By.xpath(quantityBox)).clear();
+		/* Thread.sleep(3000);
+		driver.findElement(By.xpath("//input[@id='quantity_wanted']")).clear();
 		// Thread.sleep(2000);
-		driver.findElement(By.xpath(quantityBox)).sendKeys(quantity);
+		driver.findElement(By.xpath("//input[@id='quantity_wanted']")).sendKeys("2");
 		// Thread.sleep(2000);
-		Select sizePick = new Select(driver.findElement(By.xpath(select)));
+		Select sizePick = new Select(driver.findElement(By.xpath("//select[@id='group_1']")));
 		Thread.sleep(2000);
-		sizePick.selectByValue(size);
+		sizePick.selectByValue("3");
+//  And I pick a "//input[@id='quantity_wanted']" and put "2" and "//select[@id='group_1']" a "3"*/
+	
+		categoryPage.chooseQuantityAndSize();
 	}
 
-	@And("^I \"([^\"]*)\" an item to cart")
-	public void shouldAddAnItemToCart(String addItem) throws Throwable {
-		driver.findElement(By.xpath(addItem)).click();
+	@And("^I add the item to cart")
+	//public void shouldAddAnItemToCart(String addItem) throws Throwable {
+		public void shouldAddAnItemToCart() throws Throwable {
+
+		driver.findElement(By.xpath("//button[@name='Submit']")).click();
 		Thread.sleep(3000);
+			
+		/*driver.findElement(By.xpath(addItem)).click();
+		Thread.sleep(3000);*/
+		
+		//  And I "//button[@name='Submit']" an item to cart
 	}
 
-	@Then("^I check if the Total price with shipping is correct")
+	@Then("^I check if Total price with shipping is correct")
 	public void shouldCheckIfTheTotalPriceIsCorrect() throws Throwable {
 
 		Thread.sleep(3000);
@@ -175,7 +210,7 @@ public class Steps {
 		assertEquals(expectedResult, result);
 		// System.out.println("Suma wynosi
 		// "+driver.findElement(By.xpath("//span[@class='ajax_block_cart_total']")).getText());
-		Assert.assertTrue("Total price is not visible",
+		Assert.assertTrue("Total price is not correct",
 		driver.findElement(By.xpath("//span[@class='ajax_block_cart_total']")).getText().contains("56"));
 	}
 
